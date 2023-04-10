@@ -616,6 +616,7 @@ void ntshell_init(ntshell_t *p,
  */
 void ntshell_execute(ntshell_t *p)
 {
+    unsigned char ch[100];
     /*
      * Check the initialization code.
      */
@@ -628,9 +629,8 @@ void ntshell_execute(ntshell_t *p)
      */
     PROMPT_WRITE(p);
     while (1) {
-        unsigned char ch;
-        SERIAL_READ(p, (char *)&ch, sizeof(ch));
-        vtrecv_execute(&(p->vtrecv), &ch, sizeof(ch));
+        int rx_len = SERIAL_READ(p, (char *)&ch, sizeof(ch));
+        vtrecv_execute(&(p->vtrecv), &ch, rx_len);
     }
 }
 
